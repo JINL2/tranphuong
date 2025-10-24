@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "period": "1/11/1927",
+    "year": 1927,
+    "startDate": "1927-11-01",
+    "endDate": null,
+    "title": "Chào đời",
+    "description": "Sinh tại xã Xuân Dục, huyện Mỹ Hào, tỉnh Hưng Yên (nay là phường Đường Hào, thị xã Mỹ Hào, tỉnh Hưng Yên).",
+    "category": "birth",
+    "importance": "high"
+  },
+  {
+    "id": 2,
+    "period": "9/1943",
+    "year": 1943,
+    "startDate": "1943-09-01",
+    "endDate": null,
+    "title": "Tham gia cách mạng",
+    "description": "Tham gia hoạt động cách mạng, vận động học sinh Trường Bưởi (nay là Trường THPT Chu Văn An, Hà Nội).",
+    "category": "revolution",
+    "importance": "high"
+  },
+  {
+    "id": 3,
+    "period": "1/1945 - 4/1945",
+    "year": 1945,
+    "startDate": "1945-01-01",
+    "endDate": "1945-04-30",
+    "title": "Đội viên tuyên truyền xung phong Hà Nội",
+    "description": "Là đội viên tuyên truyền xung phong, tham gia vận động và truyền bá tinh thần kháng chiến.",
+    "category": "revolution",
+    "importance": "medium"
+  },
+  {
+    "id": 4,
+    "period": "5/1945 - 3/1949",
+    "year": 1945,
+    "startDate": "1945-05-01",
+    "endDate": "1949-03-31",
+    "title": "Cán bộ Việt Minh",
+    "description": "Cán bộ Việt Minh, Huyện ủy viên, Bí thư Huyện ủy, Phó Bí thư Tỉnh ủy Hưng Yên.",
+    "category": "revolution",
+    "importance": "high"
+  },
+  {
+    "id": 5,
+    "period": "4/1949 - 1/1951",
+    "year": 1949,
+    "startDate": "1949-04-01",
+    "endDate": "1951-01-31",
+    "title": "Công tác tuyên truyền Liên khu 3",
+    "description": "Phó Ban Tuyên truyền Liên khu 3, Giám đốc Sở Thông tin, Chủ nhiệm Báo Cứu quốc Liên khu 3.",
+    "category": "career",
+    "importance": "medium"
+  },
+  {
+    "id": 6,
+    "period": "2/1951 - 6/1953",
+    "year": 1951,
+    "startDate": "1951-02-01",
+    "endDate": "1953-06-30",
+    "title": "Lãnh đạo Hải Phòng",
+    "description": "Ủy viên Thường vụ, Phó Bí thư Thành ủy Hải Phòng, kiêm Phó Chủ tịch Ủy ban kháng chiến hành chính thành phố.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 7,
+    "period": "7/1953 - 7/1954",
+    "year": 1953,
+    "startDate": "1953-07-01",
+    "endDate": "1954-07-31",
+    "title": "Công tác tại Khu Tả Ngạn",
+    "description": "Phó Ban Tuyên huấn Khu ủy Tả Ngạn, Giám đốc Sở Tuyên truyền Văn nghệ, Chủ nhiệm Báo Cứu quốc Tả Ngạn.",
+    "category": "career",
+    "importance": "medium"
+  },
+  {
+    "id": 8,
+    "period": "7/1954 - 8/1956",
+    "year": 1954,
+    "startDate": "1954-07-01",
+    "endDate": "1956-08-31",
+    "title": "Du học tại Trung Quốc",
+    "description": "Học tại Học viện Mác - Lênin, Bắc Kinh, Trung Quốc.",
+    "category": "education",
+    "importance": "high"
+  },
+  {
+    "id": 9,
+    "period": "8/1956 - 11/1957",
+    "year": 1956,
+    "startDate": "1956-08-01",
+    "endDate": "1957-11-30",
+    "title": "Phó Giám đốc Đài Tiếng nói Việt Nam",
+    "description": "Tham gia Tỉnh ủy Hưng Yên, làm công tác sửa sai cải cách ruộng đất.",
+    "category": "career",
+    "importance": "medium"
+  },
+  {
+    "id": 10,
+    "period": "11/1957 - 3/1959",
+    "year": 1957,
+    "startDate": "1957-11-01",
+    "endDate": "1959-03-31",
+    "title": "Công tác tại Trường Nguyễn Ái Quốc Trung ương",
+    "description": "Chủ nhiệm Khoa Kinh tế, Ủy viên Hiệu ủy, tham gia đào tạo cán bộ lý luận chính trị.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 11,
+    "period": "3/1959 - 10/1976",
+    "year": 1959,
+    "startDate": "1959-03-01",
+    "endDate": "1976-10-31",
+    "title": "Viện trưởng Viện Kinh tế",
+    "description": "Viện phó rồi Viện trưởng Viện Kinh tế, Phó Chủ nhiệm Ủy ban Khoa học Xã hội (nay là Viện Hàn lâm KHXH Việt Nam).",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 12,
+    "period": "10/1976",
+    "year": 1976,
+    "startDate": "1976-10-01",
+    "endDate": null,
+    "title": "Thứ trưởng Bộ Nội thương",
+    "description": "Giữ chức Thứ trưởng Bộ Nội thương (nay là Bộ Công Thương).",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 13,
+    "period": "12/1976",
+    "year": 1976,
+    "startDate": "1976-12-01",
+    "endDate": null,
+    "title": "Ủy viên Trung ương Đảng",
+    "description": "Được bầu làm Ủy viên dự khuyết Ban Chấp hành Trung ương Đảng khóa IV.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 14,
+    "period": "1/1980 - 3/1982",
+    "year": 1980,
+    "startDate": "1980-01-01",
+    "endDate": "1982-03-31",
+    "title": "Bộ trưởng Bộ Nội thương - Giáo sư Kinh tế",
+    "description": "Giữ chức Bộ trưởng Bộ Nội thương, Phó Chủ nhiệm Ủy ban Kế hoạch Nhà nước. Được phong học hàm **Giáo sư Kinh tế**.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 15,
+    "period": "3/1982 - 2/1986",
+    "year": 1982,
+    "startDate": "1982-03-01",
+    "endDate": "1986-02-28",
+    "title": "Phó Chủ tịch Hội đồng Bộ trưởng (nay là Phó Thủ tướng Chính phủ)",
+    "description": "Ủy viên Trung ương Đảng khóa V; phụ trách lĩnh vực kinh tế, kế hoạch và tài chính quốc gia.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 16,
+    "period": "2/1986 - 8/1992",
+    "year": 1986,
+    "startDate": "1986-02-01",
+    "endDate": "1992-08-31",
+    "title": "Phó Chủ nhiệm Ủy ban Kế hoạch Nhà nước",
+    "description": "Kiêm Viện trưởng Viện Kế hoạch dài hạn và phân bố lực lượng sản xuất; góp phần hình thành tư duy đổi mới kinh tế.",
+    "category": "career",
+    "importance": "medium"
+  },
+  {
+    "id": 17,
+    "period": "1/8/1992",
+    "year": 1992,
+    "startDate": "1992-08-01",
+    "endDate": null,
+    "title": "Nghỉ hưu",
+    "description": "Được Đảng và Nhà nước cho nghỉ hưu, hưởng chế độ chính sách theo quy định. Tiếp tục giảng dạy, nghiên cứu, và viết sách về đổi mới tư duy kinh tế.",
+    "category": "retirement",
+    "importance": "high"
+  },
+  {
+    "id": 18,
+    "period": "1975 - 2021",
+    "year": 1975,
+    "startDate": "1975-01-01",
+    "endDate": "2021-12-31",
+    "title": "Chủ tịch Hội Khoa học Kinh tế Việt Nam",
+    "description": "Theo sự phân công của Ban Bí thư Trung ương Đảng, Giáo sư kiêm giữ chức Chủ tịch Hội Khoa học Kinh tế Việt Nam và liên tục được tín nhiệm bầu lại cho đến năm 2021.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 19,
+    "period": "1996 - 2025",
+    "year": 1996,
+    "startDate": "1996-01-01",
+    "endDate": "2025-01-01",
+    "title": "Nhà sáng lập và Hiệu trưởng Trường Đại học Kinh doanh và Công nghệ Hà Nội (HUBT)",
+    "description": "Thực hiện chủ trương phát triển giáo dục của Đảng và Nhà nước, Giáo sư sáng lập và giữ chức Hiệu trưởng Trường HUBT - đại học tư thục phi lợi nhuận đầu tiên ở Việt Nam.\n\nSau gần 30 năm hoạt động, trường đã đào tạo hơn **100.000 nhân lực chất lượng cao**, đóng góp tích cực cho sự nghiệp công nghiệp hóa, hiện đại hóa đất nước.",
+    "category": "career",
+    "importance": "high"
+  },
+  {
+    "id": 20,
+    "period": "Trong suốt cuộc đời",
+    "year": null,
+    "startDate": null,
+    "endDate": null,
+    "title": "Vinh danh & Huân chương",
+    "description": "Cùng tập thể HUBT được Đảng và Nhà nước tặng thưởng **Huân chương Lao động hạng Nhất, Nhì, Ba**, ghi nhận thành tích xuất sắc trong giáo dục - đào tạo.\n\nCá nhân Giáo sư được trao tặng **Huân chương Hồ Chí Minh**, **Huy hiệu 80 năm tuổi Đảng**, cùng nhiều phần thưởng cao quý khác trong và ngoài nước.",
+    "category": "honor",
+    "importance": "high"
+  }
+]

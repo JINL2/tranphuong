@@ -1,0 +1,298 @@
+'use client';
+
+import { useState, useRef } from 'react';
+import { X, Upload } from 'lucide-react';
+import { uploadImageToStorage } from '@/lib/utils/uploadImage';
+
+interface AddTributeFormProps {
+  onClose: () => void;
+}
+
+// Category options for classification
+const CATEGORIES = [
+  'Người Thầy',
+  'Gia Đình',
+  'Nhà Kinh Tế',
+  'Chiến Sĩ Cách Mạng',
+  'Khác',
+] as const;
+
+export default function AddTributeForm({ onClose }: AddTributeFormProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    relationship: '',
+    message: '',
+  });
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCategorySelect = (category: string) => {
+    setFormData((prev) => ({ ...prev, relationship: category }));
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleOpenFileBrowser = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      let imageUrl: string | null = null;
+
+      // 1. 이미지가 있으면 먼저 업로드
+      if (selectedImage) {
+        const uploadResult = await uploadImageToStorage(selectedImage);
+
+        if (!uploadResult.success) {
+          setError(uploadResult.error);
+          setIsSubmitting(false);
+          return;
+        }
+
+        imageUrl = uploadResult.url;
+      }
+
+      // 2. API에 데이터 전송
+      const response = await fetch('/api/tributes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          position: formData.relationship.trim() || null,
+          contents: formData.message.trim() || null,
+          image_url: imageUrl,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Lỗi khi gửi lời tri ân');
+      }
+
+      // 3. 성공 메시지
+      alert(result.message || 'Cảm ơn bạn đã chia sẻ!');
+
+      // 4. 폼 초기화 및 닫기
+      setFormData({ name: '', relationship: '', message: '' });
+      setSelectedImage(null);
+      setImagePreview(null);
+      onClose();
+
+      // 5. 페이지 새로고침하여 새로운 tribute 즉시 표시
+      // 약간의 지연 후 새로고침 (모달 닫기 애니메이션 시간 확보)
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+
+    } catch (err) {
+      console.error('Submit error:', err);
+      setError(err instanceof Error ? err.message : 'Đã xảy ra lỗi không xác định');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 폼 유효성 검증: (메시지 10자 이상 또는 이미지) + 카테고리 필수 (이름은 선택사항)
+  const isFormValid =
+    (formData.message.trim().length >= 10 || selectedImage) &&
+    formData.relationship.trim();
+
+  return (
+    <div className="bg-white rounded-lg shadow-xl w-full h-full overflow-y-auto relative">
+      {/* Sticky Header with Close Button - 모바일에서 항상 보임 */}
+      <div className="sticky top-0 bg-white z-[100001] border-b border-gray-200 px-6 pt-6 pb-4 md:px-8">
+        <div className="relative">
+          {/* Close Button - Top Right */}
+          <button
+            onClick={onClose}
+            className="absolute -top-2 right-0 p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Đóng"
+            type="button"
+          >
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+
+          {/* Header */}
+          <div className="pr-10">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+              Góp kỷ niệm
+            </h3>
+            <p className="text-sm text-gray-600">
+              Chia sẻ ảnh, câu chuyện, lời tưởng nhớ của bạn
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Form Content */}
+      <form onSubmit={handleSubmit} className="p-6 md:p-8 pt-4">
+
+        {/* Name Field */}
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Tên của bạn
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+            placeholder="Nhập tên của bạn"
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            Nếu để trống, sẽ hiển thị là &ldquo;Tưởng nhớ&rdquo;
+          </p>
+        </div>
+
+        {/* Image Upload Section */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Ảnh
+          </label>
+
+          {/* Hidden File Input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageSelect}
+            className="hidden"
+            aria-label="Chọn ảnh"
+          />
+
+          {/* Image Preview or Upload Buttons */}
+          {imagePreview ? (
+            <div className="relative">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleOpenFileBrowser}
+              className="w-full flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all"
+            >
+              <Upload className="w-6 h-6 text-gray-400 mb-2" />
+              <span className="text-xs text-gray-600">Chọn tệp</span>
+            </button>
+          )}
+        </div>
+
+        {/* Message Field */}
+        <div className="mb-6">
+          <label
+            htmlFor="message"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Lời nhắn gửi
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
+            rows={5}
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all resize-none"
+            placeholder="Chia sẻ kỷ niệm, lời tưởng nhớ của bạn..."
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            Tối thiểu 10 ký tự
+          </p>
+        </div>
+
+        {/* Category Selection Field */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Phân loại kỷ niệm
+          </label>
+          <p className="text-xs text-gray-500 mb-3">
+            Vui lòng chọn một mục
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {CATEGORIES.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => handleCategorySelect(category)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+                  formData.relationship === category
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        )}
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={!isFormValid || isSubmitting}
+          className="w-full bg-gray-900 text-white font-medium py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? 'Đang gửi...' : 'Góp kỷ niệm'}
+        </button>
+      </form>
+    </div>
+  );
+}

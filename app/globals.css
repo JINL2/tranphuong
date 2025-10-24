@@ -1,0 +1,1140 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+/*
+ * Memorial Website Design System
+ * Professional UI/UX with YNH-inspired spacing and Online Tribute dignity
+ * Color: Muted brown-gold for respectful, scholarly aesthetic
+ * Theme: Integrated design system with light/dark mode support
+ */
+
+:root {
+  /* Spacing */
+  --card-padding: 24px;            /* Card internal padding */
+  --section-gap: 60px;             /* Between major content blocks */
+}
+
+/* Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 104px; /* Navigation height (80px) + buffer (24px) */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main Container Constraint - Solemn, Focused Layout */
+main {
+  max-width: 1080px;     /* fits solemn, focused tone */
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 96px;     /* 96px top padding for spacing below navigation */
+  padding-left: 24px;    /* safe gutter on desktop */
+  padding-right: 24px;   /* safe gutter on desktop */
+  position: relative;    /* Create positioning context */
+  z-index: 0;            /* Explicit lower layer than navigation */
+}
+
+/* Responsive Line Break Utilities - Scoped to br elements only */
+br.hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  br.md\:block {
+    display: block;
+  }
+}
+
+@media (min-width: 1600px) {
+  main {
+    max-width: 1200px;   /* prevent content from looking too narrow */
+  }
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  color: var(--foreground);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+/* Button System - Pill Shape, Professional Sizing */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: calc(0.667em + 2px) calc(1.333em + 2px);
+  border-radius: 9999px;           /* Pill shape */
+  font-size: 1.125em;              /* 18px */
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: 2px solid var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.9;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  border: 2px solid var(--border);
+  color: var(--secondary-foreground);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary);
+  border-color: var(--ring);
+  opacity: 0.9;
+}
+
+/* Card System - Professional Spacing */
+.memorial-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease;
+}
+
+.memorial-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Section Headers - Professional Hierarchy */
+.section-header {
+  font-size: 1.25rem;              /* 20px */
+  font-weight: 700;
+  color: var(--card-foreground);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* Books Section - Responsive Grid Layout */
+.books-container {
+  position: relative;
+  padding: 1rem 0;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.book-item {
+  width: 100%;
+  transition: transform 0.2s ease;
+}
+
+.book-item:hover {
+  transform: translateY(-4px);
+}
+
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+  background: var(--muted);
+}
+
+.book-item:hover .book-cover {
+  box-shadow: var(--shadow-md);
+}
+
+.book-title {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Tablet: 3 columns */
+@media (max-width: 1023px) {
+  .books-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: 2 columns */
+@media (max-width: 767px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .book-title {
+    font-size: 0.8125rem;
+    line-height: 1.75;
+  }
+}
+
+/* Timeline - Professional, Minimal */
+ol[aria-label="Life journey timeline"] {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px var(--border);
+  flex-shrink: 0;
+}
+
+.timeline-line {
+  width: 2px;
+  background-color: var(--border);
+}
+
+/* Timeline Scroll Animations - GPU Accelerated */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Initial hidden state - will be applied via JavaScript */
+.timeline-item-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Animated visible state */
+.timeline-item-visible {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Stagger animation for child elements */
+.timeline-item-visible .timeline-period {
+  animation-delay: 0ms;
+}
+
+.timeline-item-visible .timeline-dot {
+  animation-delay: 100ms;
+}
+
+.timeline-item-visible .timeline-content {
+  animation-delay: 200ms;
+}
+
+/* Accessibility: Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-item-hidden {
+    opacity: 1;
+    transform: none;
+  }
+
+  .timeline-item-visible {
+    animation: none;
+  }
+
+  @keyframes fadeInUp {
+    from,
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Accent Elements */
+.accent-border {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.5rem;
+}
+
+/* Tab Navigation - Clean, Professional */
+.tab-active {
+  border-bottom: 3px solid var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+  padding-bottom: 12px;
+}
+
+.tab-inactive {
+  color: var(--muted-foreground);
+  border-bottom: 3px solid transparent;
+  padding-bottom: 12px;
+  transition: color 0.2s ease;
+}
+
+.tab-inactive:hover {
+  color: var(--foreground);
+}
+
+/* Tributes Section - Full Width, Bottom Position */
+.tributes-section {
+  background: var(--muted);
+  padding: var(--section-gap) 0;
+  margin-top: var(--section-gap);
+}
+
+.tribute-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 2.25rem;
+  box-shadow: var(--shadow-sm);
+  border-left: 5px solid var(--accent);
+}
+
+.tribute-quote {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--foreground);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.tribute-author {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.tribute-author-name {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* Masonry Grid - Pinterest/Instagram Discovery Style */
+.masonry-grid {
+  column-count: 1;
+  column-gap: 12px;
+  width: 100%;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: 12px;
+  display: inline-block;
+  width: 100%;
+  transition: box-shadow 0.2s ease;
+}
+
+.masonry-item:hover {
+  /* Removed translateY to prevent masonry reflow glitching */
+  /* Using shadow-only hover effect for smooth interaction */
+}
+
+/* Responsive columns for masonry grid */
+@media (min-width: 640px) {
+  .masonry-grid {
+    column-count: 2;
+    column-gap: 12px;
+  }
+
+  .masonry-item {
+    margin-bottom: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid {
+    column-count: 3;
+    column-gap: 16px;
+  }
+
+  .masonry-item {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .masonry-grid {
+    column-count: 4;
+    column-gap: 16px;
+  }
+
+  .masonry-item {
+    margin-bottom: 16px;
+  }
+}
+
+/* Add Tribute Form Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpMobile {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes expandDesktop {
+  from {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-expandForm {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+/* Mobile: Centered modal covering entire viewport including navigation */
+@media (max-width: 767px) {
+  .animate-expandForm {
+    animation-name: slideUpMobile;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* Desktop: Modal centered on screen, including navigation bar area */
+@media (min-width: 768px) {
+  .animate-expandForm {
+    animation-name: expandDesktop;
+
+    /* Center in entire viewport (navigation will be blurred by backdrop) */
+    position: fixed;
+    top: 50vh;  /* True center of viewport */
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Size constraints */
+    width: min(600px, 90vw);
+    max-height: calc(100vh - 80px);  /* viewport - safe margins */
+
+    /* Scrolling */
+    overflow-y: auto;
+
+    /* Center expansion animation */
+    transform-origin: center;
+  }
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 3.5rem 0;
+}
+
+/* Hero Section Typography Utilities */
+.font-serif-display {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+}
+
+.hero-name {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  line-height: 1.1;
+  color: #2a2a2a;
+}
+
+@media (min-width: 1024px) {
+  .hero-name {
+    font-size: 2.5rem;
+    letter-spacing: 0.8px;
+  }
+}
+
+.hero-dates {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #4a4a4a;
+  line-height: 1.5;
+}
+
+@media (min-width: 1024px) {
+  .hero-dates {
+    font-size: 1.25rem;
+  }
+}
+
+.hero-roles {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: #6b6b6b;
+  line-height: 1.6;
+  letter-spacing: 0.8px;
+}
+
+@media (min-width: 1024px) {
+  .hero-roles {
+    font-size: 0.9375rem;
+    letter-spacing: 0.8px;
+  }
+}
+
+.hero-roles span {
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+}
+
+.hero-roles span:first-child {
+  margin-left: 0;
+}
+
+.text-primary-muted {
+  color: rgba(139, 115, 85, 0.15);
+}
+
+.quotation-text {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #666666;
+  line-height: 1.85;
+}
+
+@media (min-width: 768px) {
+  .quotation-text {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+}
+
+.quotation-context {
+  font-size: 0.95rem;
+  font-weight: 300;
+  font-style: normal;
+  color: #666666;
+  line-height: 1.75;
+  margin-top: 8px;
+  max-width: 90%;
+}
+
+/* Quotation text with decorative marks positioned relative to text */
+.quotation-text {
+  position: relative;
+  display: inline-block;
+}
+
+/* Opening quotation mark */
+.quotation-text::before {
+  content: "\201C";
+  position: absolute;
+  font-size: 48px;
+  color: rgba(42, 42, 42, 0.08);
+  left: -24px;
+  top: -8px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .quotation-text::before {
+    font-size: 56px;
+    color: rgba(42, 42, 42, 0.10);
+    left: -28px;
+    top: -12px;
+  }
+}
+
+/* Closing quotation mark */
+.quotation-text::after {
+  content: "\201D";
+  position: absolute;
+  font-size: 48px;
+  color: rgba(42, 42, 42, 0.08);
+  right: -24px;
+  bottom: -8px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .quotation-text::after {
+    font-size: 56px;
+    color: rgba(42, 42, 42, 0.10);
+    right: -28px;
+    bottom: -12px;
+  }
+}
+
+/* Books Quotation Styling with Decorative Marks */
+.books-quote-wrapper {
+  position: relative;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.books-quote-wrapper::before {
+  content: "\201C";
+  position: absolute;
+  font-size: 48px;
+  color: rgba(0, 0, 0, 0.12);
+  left: -16px;
+  top: -8px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* New closing mark on .books-quote-wrapper (same parent as opening mark) */
+.books-quote-wrapper::after {
+  content: "\201D";
+  position: absolute;
+  font-size: 48px;
+  color: rgba(0, 0, 0, 0.12);
+  right: -16px;
+  bottom: -8px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .books-quote-wrapper {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .books-quote-wrapper::before {
+    font-size: 56px;
+    color: rgba(0, 0, 0, 0.14);
+    left: -24px;
+    top: -12px;
+  }
+
+  .books-quote-wrapper::after {
+    font-size: 56px;
+    color: rgba(0, 0, 0, 0.14);
+    right: -24px;
+    bottom: -12px;
+  }
+}
+
+.books-quotation-text {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #404040;
+  line-height: 1.7;
+  position: relative;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
+  hyphens: auto;
+  word-spacing: -0.05em;
+}
+
+@media (min-width: 768px) {
+  .books-quotation-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+}
+
+/* Disable old closing mark on .books-quotation-text */
+.books-quotation-text::after {
+  content: none;
+  display: none;
+}
+
+/* Typography Utilities for Vietnamese Text */
+.word-spacing-tight {
+  word-spacing: -0.05em;
+}
+
+/* Focus Indicators - Accessibility */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Scroll to Top Button - Memorial Theme Aligned */
+:root {
+  --scroll-button-size: 48px;
+  --scroll-button-bottom: 24px;
+  --scroll-button-right: 16px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --scroll-button-size: 52px;
+    --scroll-button-bottom: 32px;
+    --scroll-button-right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --scroll-button-size: 56px;
+    --scroll-button-bottom: 40px;
+    --scroll-button-right: 32px;
+  }
+}
+
+.scroll-to-top {
+  /* Positioning - Fixed bottom-right corner */
+  position: fixed;
+  bottom: var(--scroll-button-bottom);
+  right: var(--scroll-button-right);
+  z-index: 9997; /* Below navigation (9999), above content */
+
+  /* Sizing - Responsive via CSS variables */
+  width: var(--scroll-button-size);
+  height: var(--scroll-button-size);
+
+  /* Visual Design - Memorial Theme */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: 2px solid var(--border);
+  border-radius: 50%; /* Perfect circle */
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+
+  /* Animation - Smooth, sophisticated */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Initial Hidden State */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.8);
+  pointer-events: none;
+}
+
+/* Visible State - Triggered by JavaScript */
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Hover State - Elegant lift effect */
+.scroll-to-top:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Active State - Click feedback */
+.scroll-to-top:active {
+  transform: scale(0.95);
+}
+
+/* Focus State - Accessibility */
+.scroll-to-top:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+
+/* Reduced Motion - Accessibility Compliance */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top {
+    transition: opacity 0.2s ease;
+    transform: none !important;
+  }
+
+  .scroll-to-top.visible {
+    transform: none !important;
+  }
+
+  .scroll-to-top:hover {
+    transform: none !important;
+  }
+
+  .scroll-to-top:active {
+    transform: none !important;
+  }
+}
+
+
+/* Tribute Section Title - Refined Elegance */
+.tribute-section-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;           /* 24px mobile */
+  font-weight: 500;            /* Medium weight, not bold */
+  font-style: italic;          /* Literary elegance */
+  line-height: 1.6;            /* Generous spacing for Vietnamese */
+  letter-spacing: 0.01em;      /* Slight tracking */
+  color: #4a4a4a;              /* Softer than pure black */
+  max-width: 42ch;             /* Optimal reading width */
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .tribute-section-title {
+    font-size: 1.75rem;        /* 28px tablet */
+    line-height: 1.65;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tribute-section-title {
+    font-size: 1.875rem;       /* 30px desktop */
+    line-height: 1.7;
+  }
+}
+
+/* Utilities */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.text-accent {
+  color: var(--accent-foreground);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --section-gap: 40px;
+    --card-padding: 16px;
+  }
+
+  .btn {
+    padding: calc(0.55em + 2px) calc(1.1em + 2px);
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  :root {
+    --section-gap: 50px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .btn,
+  .tab-inactive,
+  .tab-active {
+    display: none;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  .memorial-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+/* Biography Grid Gallery - Option 5: Grid Gallery Integration */
+.biography-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Desktop: 2-column mosaic layout */
+@media (min-width: 768px) {
+  .biography-grid {
+    grid-template-columns: 150px 1fr;
+    gap: 2rem 2.5rem;
+    align-items: center;
+  }
+
+  /* Row 1: Young photo (left) + Text 1 (right) */
+  .bio-photo-young {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .bio-text-1 {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  /* Row 2: Text 2 (with paragraphs 2 & 3) with floated old photo - spans full width */
+  .bio-text-2 {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  /* Float the old photo to the right within text-2 */
+  .bio-photo-float-right {
+    float: right;
+    margin: 0 0 1.5rem 2rem;
+  }
+
+  /* Link spans full width */
+  .bio-link-container {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}
+
+/* Large desktop: Slightly wider photos */
+@media (min-width: 1024px) {
+  .biography-grid {
+    grid-template-columns: 170px 1fr;
+    gap: 2.5rem 3rem;
+  }
+}
+
+/* Photo Container Styling */
+.bio-photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Override for floated photo - must be inline-block to float */
+.bio-photo-float-right.bio-photo-container {
+  display: inline-block;
+  width: auto;
+}
+
+.bio-photo-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 170px;
+}
+
+
+.bio-photo-wrapper:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.bio-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* All photos default to portrait 5:7 ratio (original behavior) */
+.bio-photo {
+  aspect-ratio: 5 / 7;
+}
+
+.bio-photo-wrapper:hover .bio-photo {
+  transform: scale(1.05);
+}
+
+/* Text Block Styling */
+.bio-text-block {
+  display: block;
+}
+
+.bio-text-block p {
+  margin: 0;
+}
+
+/* Clearfix for text-2 to contain floated photo */
+.bio-text-2::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Align text-1 vertically */
+.bio-text-1 {
+  display: flex;
+  align-items: center;
+}
+
+/* Link Container */
+.bio-link-container {
+  margin-top: 1.5rem;
+}
+
+/* Mobile: Stack vertically, photos centered */
+@media (max-width: 767px) {
+  .biography-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .bio-photo-wrapper {
+    max-width: 150px;
+  }
+
+  /* Wider width for horizontal photos on mobile */
+  .bio-photo-old .bio-photo-wrapper {
+    max-width: 280px;
+  }
+
+  /* Mobile ONLY: Show full horizontal image without cropping */
+  .bio-photo-old .bio-photo {
+    aspect-ratio: auto !important;
+    object-fit: cover;
+    height: auto;
+  }
+
+  .bio-text-block {
+    text-align: left;
+    display: block;
+  }
+
+  /* Disable float on mobile - stack naturally */
+  .bio-photo-float-right {
+    float: none;
+    margin: 0 auto 1rem auto;
+  }
+
+  /* Reset desktop inline-block override for proper centering */
+  .bio-photo-float-right.bio-photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .bio-link-container {
+    margin-top: 1rem;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .biography-grid {
+    grid-template-columns: 140px 1fr;
+    gap: 2rem 2rem;
+  }
+
+  .bio-photo-wrapper {
+    max-width: 140px;
+  }
+}

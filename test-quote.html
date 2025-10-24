@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .quote-wrapper {
+      position: relative;
+      border: 2px solid red; /* DEBUG: see the wrapper boundary */
+      display: inline-block;
+      padding: 20px 0; /* some vertical padding */
+    }
+
+    .quote-wrapper::before {
+      content: "\201C";
+      position: absolute;
+      font-size: 56px;
+      color: rgba(42, 42, 42, 0.10);
+      left: -20px;
+      top: -16px;
+      font-family: serif;
+      font-weight: 400;
+      line-height: 1;
+      pointer-events: none;
+      background: yellow; /* DEBUG: see the quotation mark */
+    }
+
+    .quote-wrapper::after {
+      content: "\201D";
+      position: absolute;
+      font-size: 56px;
+      color: rgba(42, 42, 42, 0.10);
+      right: -20px;
+      bottom: 68px;
+      font-family: serif;
+      font-weight: 400;
+      line-height: 1;
+      pointer-events: none;
+      background: yellow; /* DEBUG: see the quotation mark */
+    }
+
+    .quotation-text {
+      font-family: serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      font-style: italic;
+      color: #666666;
+      line-height: 1.85;
+    }
+  </style>
+</head>
+<body style="padding: 100px; text-align: center;">
+  <blockquote class="quote-wrapper" style="text-align: center;">
+    <p class="quotation-text">
+      Đổi mới không phải là một sự kiện, mà là một thái độ sống.<br/>
+      Ai còn dám nghĩ khác, dám làm khác vì cái đúng - người đó vẫn đang đổi mới.
+    </p>
+  </blockquote>
+</body>
+</html>

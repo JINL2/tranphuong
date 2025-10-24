@@ -1,0 +1,129 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import AddTributeForm from './AddTributeForm';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+
+/**
+ * GlobalAddTributeForm - A global form overlay accessible from anywhere via hash navigation
+ *
+ * Features:
+ * - Listens for #add-tribute hash in URL
+ * - Opens form overlay on any page instantly
+ * - Responsive: centered on mobile and desktop
+ * - Preserves page context (doesn't navigate away)
+ * - SSR-safe with isMounted guard
+ * - Accessibility: focus trap, escape key, ARIA attributes
+ * - Smooth animation with backdrop blur
+ */
+export default function GlobalAddTributeForm() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // SSR guard - only render portal after mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Focus trap for accessibility
+  useFocusTrap(formRef, isOpen);
+
+  // Listen for hash changes and check on mount
+  useEffect(() => {
+    const checkHash = () => {
+      const hash = window.location.hash;
+      if (hash === '#add-tribute') {
+        // Small delay for smooth UX - allows page to settle before opening
+        setTimeout(() => {
+          setIsOpen(true);
+        }, 100);
+      } else {
+        setIsOpen(false);
+      }
+    };
+
+    // Check immediately on mount
+    checkHash();
+
+    // Listen for hash changes (when user clicks navigation)
+    window.addEventListener('hashchange', checkHash);
+
+    // Listen for popstate (browser back/forward)
+    window.addEventListener('popstate', checkHash);
+
+    return () => {
+      window.removeEventListener('hashchange', checkHash);
+      window.removeEventListener('popstate', checkHash);
+    };
+  }, []);
+
+  const handleClose = () => {
+    setIsOpen(false);
+
+    // Remove hash from URL without page reload
+    // This allows users to close form and stay on current page
+    if (window.location.hash === '#add-tribute') {
+      // Use history.replaceState to avoid adding to history
+      const newUrl = window.location.pathname + window.location.search;
+      window.history.replaceState(null, '', newUrl);
+    }
+  };
+
+  // Handle Escape key to close
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      // Focus the form container for accessibility
+      formRef.current?.focus();
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
+
+  // Don't render anything until mounted (SSR safety)
+  if (!isMounted) {
+    return null;
+  }
+
+  // Only render portal when form is open
+  if (!isOpen) {
+    return null;
+  }
+
+  return createPortal(
+    <>
+      {/* Backdrop - Blurs entire screen including navigation */}
+      <div
+        className="fixed inset-0 backdrop-blur-sm z-[99999] animate-fadeIn"
+        onClick={handleClose}
+        aria-hidden="true"
+      />
+
+      {/* Form Container - Centered on both mobile and desktop using flexbox */}
+      <div
+        ref={formRef}
+        className="fixed inset-0 z-[100000] flex items-center justify-center p-4 md:p-6 animate-fadeIn pointer-events-none"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tribute-form-title"
+        tabIndex={-1}
+      >
+        {/* Inner scroll container with actual form dimensions */}
+        <div className="w-full max-w-[600px] max-h-[90vh] md:max-h-[calc(100vh-80px)] overflow-y-auto animate-scaleIn pointer-events-auto">
+          <AddTributeForm onClose={handleClose} />
+        </div>
+      </div>
+    </>,
+    document.body
+  );
+}

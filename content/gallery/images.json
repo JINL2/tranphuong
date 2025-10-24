@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "src": "/young.jpg",
+    "alt": "Giáo sư Trần Phương thời trẻ",
+    "caption": "Thời trẻ tại Đại học Bách khoa",
+    "date": "1950",
+    "category": "Gia Đình",
+    "width": 800,
+    "height": 800
+  },
+  {
+    "id": 2,
+    "src": "/at school.jpg",
+    "alt": "Giáo sư Trần Phương tại trường học",
+    "caption": "Tại trường Đại học Bách khoa Hà Nội",
+    "date": "1985",
+    "category": "Người Thầy",
+    "width": 1200,
+    "height": 900
+  },
+  {
+    "id": 3,
+    "src": "/speech school.jpg",
+    "alt": "Giáo sư Trần Phương phát biểu tại hội nghị",
+    "caption": "Phát biểu tại hội nghị khoa học",
+    "date": "1990",
+    "category": "Nhà Kinh Tế",
+    "width": 1200,
+    "height": 800
+  },
+  {
+    "id": 4,
+    "src": "/Grandpa image copy.JPG",
+    "alt": "Chân dung Giáo sư Trần Phương",
+    "caption": "Chân dung trong những năm cuối đời",
+    "date": "2020",
+    "category": "Gia Đình",
+    "width": 800,
+    "height": 800
+  },
+  {
+    "id": 5,
+    "src": "/Profile photo.jpg",
+    "alt": "Ảnh chân dung Giáo sư Trần Phương",
+    "caption": "Ảnh chân dung chính thức",
+    "date": "2015",
+    "category": "Người Thầy",
+    "width": 800,
+    "height": 800
+  },
+  {
+    "id": 6,
+    "src": "/z5122159191005_9ac4cbd3be47ebe7c02ef64dbbee2b08-1536x1021.jpg",
+    "alt": "Giáo sư Trần Phương tại sự kiện",
+    "caption": "Tại lễ kỷ niệm thành lập trường",
+    "date": "2010",
+    "category": "Chiến Sĩ Cách Mạng",
+    "width": 1536,
+    "height": 1021
+  }
+]
