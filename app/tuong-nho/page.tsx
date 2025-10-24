@@ -24,10 +24,7 @@ export default async function TributeListPage({ searchParams }: PageProps) {
       .order('created_at', { ascending: false });
 
     if (replies) {
-      allTributes = convertRepliesToTributes(replies).map(t => ({
-        ...t,
-        source: 'supabase' as const
-      }));
+      allTributes = convertRepliesToTributes(replies);
     }
   } catch (error) {
     console.error('Failed to fetch tributes from Supabase:', error);
@@ -95,8 +92,8 @@ export default async function TributeListPage({ searchParams }: PageProps) {
           </div>
 
           {/* Tribute Cards */}
-          {paginatedTributes.map((tribute) => (
-            <div key={`${tribute.source}-${tribute.type}-${tribute.id}`} className="masonry-item">
+          {paginatedTributes.map((tribute, idx) => (
+            <div key={`tribute-${tribute.id}-${idx}`} className="masonry-item">
               <TributeCard tribute={tribute} />
             </div>
           ))}
