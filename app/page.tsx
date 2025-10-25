@@ -19,13 +19,12 @@ export default function Home() {
             <div className="flex-shrink-0">
               <div className="w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] lg:w-[280px] lg:h-[280px] rounded-xl overflow-hidden relative">
                 <Image
-                  src="/Grandpa image copy.JPG"
+                  src="/new ava.jpg"
                   alt="GS. Trần Phương"
                   fill
-                  className="object-cover object-[center_20%]"
+                  className="object-cover object-center"
                   priority
                   sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 280px"
-                  style={{ transform: 'scale(1.02)' }}
                 />
               </div>
             </div>
