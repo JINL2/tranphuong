@@ -5,15 +5,20 @@ import { Send, Loader2, RefreshCw } from 'lucide-react';
 import { useNotebook } from '@/hooks/useNotebook';
 import { useSources } from '@/hooks/useSources';
 import { useChatMessages } from '@/hooks/useChatMessages';
+import { useAutoResizeTextarea } from '@/hooks/useAutoResizeTextarea';
+import { FEATURES } from '@/lib/features';
 import MarkdownRenderer from './MarkdownRenderer';
+import SuggestedQuestions from './SuggestedQuestions';
+import BookInfoHeader from './BookInfoHeader';
 import type { Citation } from '@/types/chat/message';
 
 interface ChatSectionProps {
   notebookId: string;
+  bookId: string;
   onCitationClick?: (citation: Citation) => void;
 }
 
-const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
+const ChatSection = ({ notebookId, bookId, onCitationClick }: ChatSectionProps) => {
   // Generate unique session ID on component mount (changes on refresh/re-enter)
   const [sessionId] = useState(() => crypto.randomUUID());
 
@@ -21,6 +26,15 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
   const [pendingUserMessage, setPendingUserMessage] = useState<string | null>(null);
   const [showAiLoading, setShowAiLoading] = useState(false);
   const [lastMessageCount, setLastMessageCount] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [bookTitle, setBookTitle] = useState('');
+  const [bookSummary, setBookSummary] = useState('');
+
+  // Auto-resize textarea hook (only used if FEATURES.AUTO_EXPANDING_TEXTAREA is true)
+  const textareaRef = useAutoResizeTextarea(message, {
+    minHeight: 48,
+    maxHeight: 200
+  });
 
   const { notebook } = useNotebook(notebookId);
   const { sources } = useSources(notebookId);
@@ -42,6 +56,34 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
     // Pass to parent component (page.tsx) to handle
     onCitationClick?.(citation);
   };
+
+  // Load book data from books.json
+  useEffect(() => {
+    const loadBookData = async () => {
+      try {
+        const response = await fetch('/api/books');
+        const books = await response.json();
+        const book = books.find((b: any) => b.id === parseInt(bookId));
+        if (book) {
+          setBookTitle(book.title);
+          setBookSummary(book.excerpt);
+        }
+      } catch (error) {
+        console.error('Failed to load book data:', error);
+      }
+    };
+    loadBookData();
+  }, [bookId]);
+
+  // Detect mobile for Enter key behavior
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Clear pending message when we get new messages
   useEffect(() => {
@@ -116,12 +158,15 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
   const getPlaceholderText = () => {
     if (isChatDisabled) {
       if (sourceCount === 0) {
-        return "Upload a source to get started...";
+        return "Tải lên tài liệu để bắt đầu...";
       } else {
-        return "Please wait while your sources are being processed...";
+        return "Vui lòng đợi trong khi tài liệu đang được xử lý...";
       }
     }
-    return "Start typing...";
+    // Desktop: Show examples, Mobile: Short version
+    return isMobile
+      ? "Hãy đặt câu hỏi..."
+      : "Hãy đặt câu hỏi... (ví dụ: Những ý chính | Tóm tắt đầy đủ | Ông là ai?)";
   };
 
   return (
@@ -129,8 +174,8 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col h-full w-full">
         {/* Header */}
-        <div className="px-4 border-b border-gray-200 flex-shrink-0" style={{ height: '64px' }}>
-          <div className="max-w-4xl mx-auto flex items-center justify-between h-full">
+        <div className="px-4 md:px-9 border-b border-gray-200 flex-shrink-0" style={{ height: '64px' }}>
+          <div className="flex items-center justify-between h-full">
             <div className="flex items-center space-x-4">
               <h2 className="text-lg font-medium text-gray-900">Chat</h2>
               <span className="text-xs text-gray-500">
@@ -154,10 +199,18 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
           </div>
         </div>
 
+        {/* Book Info Header - shows book title and collapsible summary */}
+        {bookTitle && (
+          <BookInfoHeader
+            bookTitle={bookTitle}
+            summary={bookSummary}
+          />
+        )}
+
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto">
-          <div className="px-6 py-6">
-            <div className="max-w-4xl mx-auto space-y-6">
+          <div className="px-4 md:px-9 py-6">
+            <div className="space-y-6 md:max-w-[90%]">
               {isLoading && messages.length === 0 && (
                 <div className="text-center py-8">
                   <Loader2 className="h-8 w-8 animate-spin text-gray-400 mx-auto mb-3" />
@@ -216,10 +269,34 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
           </div>
         </div>
 
-        {/* Input Area - Fixed at bottom on mobile */}
-        <div className="px-4 py-3 md:px-6 md:py-4 border-t border-gray-200 flex-shrink-0 bg-white sticky bottom-0 left-0 right-0 z-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 md:gap-3">
+        {/* Input Area - Fixed above footer */}
+        <div className="border-t border-gray-200 flex-shrink-0">
+          {/* Text Input Row - Responsive padding: 16px mobile, 36px desktop */}
+          <div className="px-4 md:px-9 pt-3 pb-2 flex items-start gap-2 md:gap-3 relative z-0">
+            {FEATURES.AUTO_EXPANDING_TEXTAREA ? (
+              // NEW: Auto-expanding textarea for better UX with long questions
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                placeholder={getPlaceholderText()}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    // Desktop: Enter = Send, Shift+Enter = New Line
+                    // Mobile: Enter = New Line (mobile keyboards make Shift+Enter hard)
+                    if (!e.shiftKey && !isMobile) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }
+                }}
+                disabled={isChatDisabled || isSending || !!pendingUserMessage}
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm md:text-base resize-none overflow-hidden transition-colors"
+                style={{ minHeight: '48px', maxHeight: '200px' }}
+              />
+            ) : (
+              // FALLBACK: Single-line input (original behavior)
               <input
                 type="text"
                 placeholder={getPlaceholderText()}
@@ -232,25 +309,33 @@ const ChatSection = ({ notebookId, onCitationClick }: ChatSectionProps) => {
                   }
                 }}
                 disabled={isChatDisabled || isSending || !!pendingUserMessage}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed text-sm md:text-base"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm md:text-base transition-colors"
               />
-              <button
-                onClick={() => handleSendMessage()}
-                disabled={!message.trim() || isChatDisabled || isSending || !!pendingUserMessage}
-                className="w-12 h-12 md:w-auto md:px-6 md:py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center flex-shrink-0"
-              >
-                {isSending || pendingUserMessage ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                ) : (
-                  <Send className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-
-            <p className="text-center text-xs text-gray-500 mt-3 md:mt-4">
-              AI can be inaccurate; please double-check its responses.
-            </p>
+            )}
+            <button
+              onClick={() => handleSendMessage()}
+              disabled={!message.trim() || isChatDisabled || isSending || !!pendingUserMessage}
+              className="w-12 h-12 md:w-auto md:px-6 md:py-3 bg-gray-800 text-white rounded-full hover:bg-gray-900 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center flex-shrink-0"
+            >
+              {isSending || pendingUserMessage ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </button>
           </div>
+
+          {/* Suggested Questions - Shows below input */}
+          <SuggestedQuestions
+            bookId={bookId}
+            onQuestionClick={(question) => handleSendMessage(question)}
+            isDisabled={isChatDisabled || isSending || !!pendingUserMessage}
+          />
+
+          {/* Disclaimer text - Responsive padding matches input above */}
+          <p className="text-center text-xs text-gray-500 px-4 md:px-9 pb-3">
+            Phản hồi của AI có thể không chính xác; vui lòng kiểm chứng lại thông tin và <span className="font-bold">không sử dụng làm trích dẫn</span>.
+          </p>
         </div>
       </div>
 

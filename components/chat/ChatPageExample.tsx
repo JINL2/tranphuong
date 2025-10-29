@@ -16,6 +16,7 @@ export default function ChatPageExample() {
   // Get notebook ID from URL parameters
   const searchParams = useSearchParams();
   const notebookId = searchParams.get('notebookId') || 'your-default-notebook-id';
+  const bookId = searchParams.get('bookId') || 'your-default-book-id';
 
   return (
     <div className="h-screen w-full overflow-hidden bg-white">
@@ -24,7 +25,7 @@ export default function ChatPageExample() {
           <SourcesSection notebookId={notebookId} />
         }
         rightPanel={
-          <ChatSection notebookId={notebookId} />
+          <ChatSection notebookId={notebookId} bookId={bookId} />
         }
         defaultLeftWidth={40}
         minLeftWidth={25}

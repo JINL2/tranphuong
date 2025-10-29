@@ -27,6 +27,15 @@ interface SupabaseReply {
   is_deleted: boolean | null;
 }
 
+const CATEGORIES = [
+  'Tất cả',
+  'Người Thầy',
+  'Nhà Kinh Tế',
+  'Chiến Sĩ Cách Mạng',
+  'Gia Đình',
+  'Khác'
+];
+
 export default function PhotoGallery() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Tất cả');
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
@@ -63,8 +72,8 @@ export default function PhotoGallery() {
             setDatabaseImages(convertedImages);
           }
         }
-      } catch (error) {
-        console.error('Error fetching database images:', error);
+      } catch {
+        // Silently handle error - gallery will show default images
       } finally {
         setIsLoading(false);
       }
@@ -78,19 +87,6 @@ export default function PhotoGallery() {
     return [...imagesData, ...databaseImages];
   }, [databaseImages]);
 
-  // Get unique categories (including predefined ones)
-  const categories = useMemo(() => {
-    const predefinedCategories = [
-      'Tất cả',
-      'Người Thầy',
-      'Nhà Kinh Tế',
-      'Chiến Sĩ Cách Mạng',
-      'Gia Đình',
-      'Khác'
-    ];
-
-    return predefinedCategories;
-  }, []);
 
   // Filter images by category
   const filteredImages = useMemo(() => {
@@ -134,7 +130,7 @@ export default function PhotoGallery() {
       (img) => img.id === lightboxImage.id
     );
     const nextIndex = (currentIndex + 1) % filteredImages.length;
-    setLightboxImage(filteredImages[nextIndex] as GalleryImage);
+    setLightboxImage(filteredImages[nextIndex]);
   };
 
   const handlePrevious = () => {
@@ -144,7 +140,7 @@ export default function PhotoGallery() {
     );
     const previousIndex =
       currentIndex === 0 ? filteredImages.length - 1 : currentIndex - 1;
-    setLightboxImage(filteredImages[previousIndex] as GalleryImage);
+    setLightboxImage(filteredImages[previousIndex]);
   };
 
   const hasNext =
@@ -171,7 +167,7 @@ export default function PhotoGallery() {
       {/* Category Filter */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <div className="flex flex-wrap items-center justify-center gap-2">
-          {categories.map((category) => (
+          {CATEGORIES.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -208,7 +204,7 @@ export default function PhotoGallery() {
               {paginatedImages.map((image) => (
                 <button
                   key={image.id}
-                  onClick={() => handleImageClick(image as GalleryImage)}
+                  onClick={() => handleImageClick(image)}
                   className="aspect-square rounded-lg overflow-hidden relative group cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
                   aria-label={`Xem ảnh: ${image.caption}`}
                 >

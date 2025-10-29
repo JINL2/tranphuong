@@ -32,34 +32,14 @@ const SourceContentViewer = ({
   );
 
   // Check if we have valid citation line data (indicating a real citation click)
-  const hasValidCitationLines = citation && 
-    typeof citation.chunk_lines_from === 'number' && 
+  const hasValidCitationLines = citation &&
+    typeof citation.chunk_lines_from === 'number' &&
     typeof citation.chunk_lines_to === 'number' &&
     citation.chunk_lines_from > 0;
 
-  console.log('SourceContentViewer: Render with citation', {
-    citationId: citation?.citation_id,
-    sourceId: citation?.source_id,
-    hasValidCitationLines,
-    isOpenedFromSourceList,
-    chunkLinesFrom: citation?.chunk_lines_from,
-    chunkLinesTo: citation?.chunk_lines_to,
-    hasSourceContent: !!sourceContent,
-    sourceContentLength: sourceContent?.length
-  });
-
   // Auto-scroll to highlighted content when citation changes and has valid line data
   useEffect(() => {
-    console.log('SourceContentViewer: Auto-scroll effect triggered', {
-      hasValidCitationLines,
-      citationId: citation?.citation_id,
-      chunkLinesFrom: citation?.chunk_lines_from,
-      hasScrollAreaRef: !!scrollAreaViewportRef.current
-    });
-
     if (hasValidCitationLines && citation?.chunk_lines_from && scrollAreaViewportRef.current) {
-      console.log('SourceContentViewer: Starting auto-scroll process');
-
       const timer = setTimeout(() => {
         const scrollAreaElement = scrollAreaViewportRef.current;
         if (!scrollAreaElement) return;
@@ -72,34 +52,15 @@ const SourceContentViewer = ({
           const firstHighlightedLine = viewport.querySelector(`[data-line="${citation.chunk_lines_from}"]`) as HTMLElement;
 
           if (firstHighlightedLine) {
-            console.log('SourceContentViewer: Scroll calculation', {
-              lineNumber: citation.chunk_lines_from,
-              highlightedOffsetTop: firstHighlightedLine.offsetTop,
-              highlightedHeight: firstHighlightedLine.clientHeight,
-              viewportHeight: viewport.clientHeight,
-              currentScrollTop: viewport.scrollTop
-            });
-
             // Calculate scroll position to center the highlighted content
             const scrollTop = firstHighlightedLine.offsetTop - (viewport.clientHeight / 2) + (firstHighlightedLine.clientHeight / 2);
             const targetScrollTop = Math.max(0, scrollTop);
-
-            console.log('SourceContentViewer: Scrolling to line', {
-              lineNumber: citation.chunk_lines_from,
-              targetScrollTop
-            });
 
             viewport.scrollTo({
               top: targetScrollTop,
               behavior: 'smooth'
             });
-          } else {
-            console.log('SourceContentViewer: First highlighted line not found', {
-              lineNumber: citation.chunk_lines_from
-            });
           }
-        } else {
-          console.log('SourceContentViewer: Viewport not found');
         }
       }, 300);
 
@@ -110,7 +71,6 @@ const SourceContentViewer = ({
   // Close guide when a real citation is clicked (has valid line data)
   useEffect(() => {
     if (hasValidCitationLines) {
-      console.log('SourceContentViewer: Closing guide for real citation');
       setAccordionValue("");
     }
   }, [hasValidCitationLines]);
@@ -160,15 +120,6 @@ const SourceContentViewer = ({
 
   const lines = normalizedContent.split('\n');
 
-  console.log('SourceContentViewer: Content lines info', {
-    totalLines: lines.length,
-    chunkLinesFrom: citation.chunk_lines_from,
-    chunkLinesTo: citation.chunk_lines_to,
-    willHighlight: hasValidCitationLines,
-    firstFewLines: lines.slice(0, 5),
-    rawContentPreview: sourceContent.substring(0, 200)
-  });
-
   // Determine the highlight range based on whether we have valid citation line data
   let startLine: number;
   let endLine: number;
@@ -190,13 +141,11 @@ const SourceContentViewer = ({
       // For real citations with valid line data, highlight the specific lines
       startLine = citation.chunk_lines_from!;
       endLine = citation.chunk_lines_to!;
-      console.log('SourceContentViewer: Will highlight lines', { startLine, endLine });
     }
   } else {
     // For source list clicks or citations without line data, don't highlight
     startLine = -1;
     endLine = -1;
-    console.log('SourceContentViewer: No highlighting (no valid line data)');
   }
 
   const renderHighlightedContent = () => {
