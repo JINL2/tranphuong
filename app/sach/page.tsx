@@ -3,16 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function BooksPage() {
-  // Load book data from JSON file
-  const books = booksData;
-
   return (
     <div className="bg-background min-h-screen">
       {/* Main Container */}
       <div className="max-w-6xl mx-auto px-6 py-16">
 
         {/* Book Sections - 5 identical layouts */}
-        {books.map((book, index) => (
+        {booksData.map((book, index) => (
           <div key={book.id}>
             {/* Book Section */}
             <section id={`book-${book.id}`} className="py-12">
@@ -67,7 +64,7 @@ export default function BooksPage() {
             </section>
 
             {/* Separator Line - Show for all except last item */}
-            {index < books.length - 1 && (
+            {index < booksData.length - 1 && (
               <div className="border-t border-border"></div>
             )}
           </div>

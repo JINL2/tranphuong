@@ -2,17 +2,15 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import timelineData from '@/content/timeline/life-journey.json';
+import { MessageCircle, ChevronRight } from 'lucide-react';
 import booksData from '@/content/books/books.json';
-import AnimatedTimeline from '@/components/timeline/AnimatedTimeline';
-import TributeGrid from '@/components/tribute/TributeGrid';
 
 export default function Home() {
   return (
     <div className="bg-white relative z-0">
       {/* Hero Container - Profile + quotation block */}
       <div className="min-h-screen flex flex-col items-center justify-start px-6 sm:px-8 lg:px-12 pt-16 pb-12 sm:pb-16 md:pb-20">
-        <div className="space-y-12 max-w-[720px] lg:max-w-none">
+        <div className="space-y-6 w-full max-w-[1000px]">
 
           {/* Profile Section - Avatar + Name/Dates/Roles */}
           <div className="flex flex-col items-center gap-6 w-full">
@@ -53,34 +51,66 @@ export default function Home() {
           </div>
 
           {/* Quotation Section - CENTERED with decorative quote mark */}
-          <div className="w-full max-w-[90%] sm:max-w-[85%] lg:max-w-[900px] mx-auto px-2 sm:px-4 lg:px-6 py-4">
+          <div className="w-full max-w-[1000px] mx-auto py-2">
             <blockquote className="quote-wrapper text-center relative">
-              <p className="quotation-text mb-4">
-                Đổi mới không phải là một sự kiện, mà là một thái độ sống.
-                <br />
-                Ai còn dám nghĩ khác, dám làm khác vì cái đúng - người đó vẫn đang đổi mới.
+              <p className="quotation-text">
+                Tôi muốn kể về một thời kỳ lịch sử mà tôi là tác nhân và cũng là nhân chứng, với những cảm nhận, suy nghĩ và tình cảm của mình, để con cháu hiểu được cách đây 100 năm, cha ông họ đã sống như thế nào, đã suy nghĩ và hành động như thế nào để tạo lập ra cái hiện tại mà ngày nay họ đang thừa hưởng...
               </p>
-              <cite className="quotation-context block text-center mx-auto">
-                Ở tuổi 69, sau khi nghỉ hưu, ông sáng lập Trường Đại học Kinh doanh và Công nghệ Hà Nội – đại học tư thục phi lợi nhuận đầu tiên của Việt Nam, đào tạo hàng trăm nghìn lao động chất lượng cao cho xã hội.
-                <br className="hidden md:block" />
-                <strong className="font-medium">Suốt 99 năm cuộc đời, ông tận hiến trọn vẹn cho Tổ quốc.</strong>
-              </cite>
             </blockquote>
+          </div>
+
+          {/* Books Grid - Integrated into Profile Section */}
+          <div className="w-full max-w-[1000px] mx-auto pt-4 pb-12">
+            {/* Section Title with Subtitle */}
+            <div className="flex flex-col items-center sm:flex-row sm:items-baseline sm:justify-start gap-2 sm:gap-4 mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-center sm:text-left">Chat cùng ông</h2>
+              <p className="hero-roles text-center sm:text-left">Đặt câu hỏi để hiểu về ông - Với sự hỗ trợ của AI.</p>
+            </div>
+
+            <div className="books-container">
+              <ul className="books-grid" aria-label="Published books">
+                {booksData.map((book) => (
+                  <li key={book.id}>
+                    <div className="book-item-wrapper">
+                      <Link href={`/sach#book-${book.id}`} className="book-cover-link block">
+                        <div className="book-cover relative">
+                          <Image
+                            src={book.coverImage}
+                            alt={book.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 160px, 180px"
+                          />
+                        </div>
+                      </Link>
+                      <Link
+                        href={`/sach/${book.id}`}
+                        className="inline-flex items-center justify-center gap-2 mt-3 px-4 py-2 border text-sm font-medium rounded-lg hover:scale-105 transition-all duration-200 w-full"
+                        style={{ borderColor: 'var(--primary)', color: 'var(--primary)', backgroundColor: 'transparent' }}
+                      >
+                        <MessageCircle className="w-4 h-4" strokeWidth={2} />
+                        Chat
+                      </Link>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
         </div>
       </div>
 
       {/* Main Content Container */}
-      <div className="bg-white flex items-start justify-center">
-        <div className="w-full max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 -mt-8 sm:-mt-12 md:-mt-14 lg:-mt-16 xl:-mt-20">
+      <div className="bg-white flex items-start justify-center px-6 sm:px-8 lg:px-12">
+        <div className="w-full max-w-[1000px] mx-auto -mt-8 sm:-mt-12 md:-mt-14 lg:-mt-16 xl:-mt-20">
 
           {/* Main Content */}
           <div className="pb-16 space-y-16 lg:space-y-20">
 
           {/* About Section - Giới Thiệu - Grid Gallery Layout */}
-          <section>
-            <h2 className="text-2xl md:text-3xl font-bold mb-12">Về Cuộc Đời</h2>
+          <section className="border-t border-gray-200 pt-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-12 text-left max-sm:text-center">Ông là ai?</h2>
 
             {/* Grid Gallery Integration - Mosaic Layout */}
             <div className="biography-grid">
@@ -119,10 +149,9 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed mb-4">
                   Sau khi nghỉ hưu, ông tiếp tục cống hiến cho giáo dục bằng việc sáng lập và trực tiếp làm Hiệu trưởng Trường Đại học Kinh doanh và Công nghệ Hà Nội – đại học tư thục phi lợi nhuận đầu tiên tại Việt Nam. Từ ngôi trường này, hàng vạn sinh viên đã được đào tạo, trở thành nguồn lao động chất lượng cao cho xã hội.
                 </p>
-                <br />
                 <p className="text-gray-700 leading-relaxed">
                   Với hơn 40 năm giảng dạy và nhiều năm quản lý, ông để lại dấu ấn sâu đậm trong lòng học trò và giới học thuật. Những công trình của ông không chỉ có giá trị lý luận mà còn đậm tính nhân văn và thực tiễn. Suốt 99 năm cuộc đời, ông là biểu tượng của trí tuệ, đạo đức và tinh thần phụng sự Tổ quốc.
                 </p>
@@ -136,137 +165,15 @@ export default function Home() {
                 className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
               >
                 Xem tiểu sử đầy đủ
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRight className="w-4 h-4" strokeWidth={2} />
               </Link>
             </div>
           </section>
 
-          <div className="border-t border-gray-200"></div>
-
-          {/* Books Section */}
-          <section>
-            <div className="flex items-center justify-between mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-0">
-                Sách
-              </h2>
-              <Link
-                href="/sach"
-                className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
-              >
-                Xem thêm
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-
-            {/* Books Quotation */}
-            <blockquote className="books-quote-wrapper mb-8">
-              <p className="books-quotation-text">
-                Tôi muốn kể về một thời kỳ lịch sử mà tôi là tác nhân và cũng là nhân chứng, với những cảm nhận, suy nghĩ và tình cảm của mình, để con cháu hiểu được cách đây 100 năm, cha ông họ đã sống như thế nào, đã suy nghĩ và hành động như thế nào để tạo lập ra cái hiện tại mà ngày nay họ đang thừa hưởng...
-              </p>
-            </blockquote>
-
-            {/* Horizontal Scrolling Books Grid */}
-            <div className="books-container">
-              <ul className="books-grid" aria-label="Published books">
-                {booksData.map((book) => (
-                  <li key={book.id}>
-                    <Link href={`/sach#book-${book.id}`} className="book-item">
-                      <div className="book-cover relative">
-                        <Image
-                          src={book.coverImage}
-                          alt={book.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 160px, 180px"
-                        />
-                      </div>
-                      <h3 className="book-title">{book.title}</h3>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          <div className="border-t border-gray-200"></div>
-
-          {/* Life Journey - Hành Trình Cuộc Đời */}
-          <section id="hanh-trinh-cuoc-doi">
-            <h2 className="text-2xl md:text-3xl font-bold mb-12">Hành Trình Cuộc Đời</h2>
-            <AnimatedTimeline data={timelineData} />
-          </section>
-
-          {/* TEMPORARILY HIDDEN - Legacy & Writings Section (Di Sản)
-              Uncomment this section when ready to add content
-          <div className="border-t border-gray-200"></div>
-
-          <section>
-            <div className="flex items-center gap-4 sm:gap-6 mb-6 border-b border-gray-200">
-              <button className="tab-active text-sm">
-                Bài Viết
-              </button>
-              <Link href="/thu-vien-anh" className="tab-inactive text-sm">
-                Hình Ảnh
-              </Link>
-              <Link href="/sach" className="tab-inactive text-sm">
-                Tác Phẩm
-              </Link>
-            </div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  title: 'Về Giáo Dục Và Tương Lai',
-                  excerpt: 'Giáo dục không chỉ là truyền đạt kiến thức, mà còn là việc thắp lên ngọn lửa đam mê học hỏi trong mỗi học trò. Đó là nhiệm vụ cao cả nhất của người thầy.',
-                  source: 'Bài viết năm 1985'
-                },
-                {
-                  title: 'Triết Lý Sống Của Một Nhà Giáo',
-                  excerpt: 'Nghề giáo là nghề "gõ đầu trẻ" - tưởng đơn giản nhưng thực ra là nghệ thuật tinh tế nhất. Mỗi đầu óc đều khác nhau, mỗi học trò đều cần một cách tiếp cận riêng.',
-                  source: 'Hồi ký năm 1998'
-                },
-                {
-                  title: 'Di Sản Văn Hóa Và Trách Nhiệm Thế Hệ',
-                  excerpt: 'Thế hệ trẻ không chỉ kế thừa di sản của cha ông mà còn phải phát huy và làm phong phú thêm. Đó là trách nhiệm mà không thể né tránh.',
-                  source: 'Bài phát biểu năm 2005'
-                },
-              ].map((article, idx) => (
-                <article key={idx} className="border-b border-gray-100 last:border-0 pb-6 last:pb-0">
-                  <h3 className="font-semibold text-gray-900 mb-3 text-base">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-gray-700 mb-3 leading-relaxed italic">
-                    &ldquo;{article.excerpt}&rdquo;
-                  </p>
-                  <div className="text-xs text-gray-500">
-                    {article.source}
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <button className="w-full mt-6 py-3 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-              Xem thêm di sản
-            </button>
-          </section>
-          END TEMPORARILY HIDDEN SECTION */}
+          {/* Note: Legacy & Writings Section (Di Sản) - Reserved for future content */}
         </div>
       </div>
       </div>
-
-      {/* Section Divider with Extra Padding */}
-      <div className="bg-white flex items-start justify-center">
-        <div className="w-full max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="border-t border-gray-200"></div>
-        </div>
-      </div>
-
-      {/* Tributes Section - New Grid Layout */}
-      <TributeGrid />
     </div>
   );
 }

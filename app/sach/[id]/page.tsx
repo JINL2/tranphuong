@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import SourcesSection from '@/components/chat/SourcesSection';
 import ChatSection from '@/components/chat/ChatSection';
@@ -24,21 +24,37 @@ interface PageProps {
 function ChatPageContent({ notebookId, bookId }: { notebookId: string; bookId: string }) {
   const [selectedCitation, setSelectedCitation] = useState<Citation | null>(null);
   const [activeTab, setActiveTab] = useState<'sources' | 'chat'>('chat');
+  const [hasAutoSelected, setHasAutoSelected] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount and set appropriate default tab
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // On desktop, default to sources tab; on mobile, default to chat tab
+      if (!mobile) {
+        setActiveTab('sources');
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleCitationClick = (citation: Citation) => {
-    console.log('Page: Citation clicked, passing to SourcesSection', citation);
     setSelectedCitation(citation);
     // Auto-switch to sources tab on mobile when citation is clicked
     setActiveTab('sources');
   };
 
   const handleCitationClose = () => {
-    console.log('Page: Citation closed');
     setSelectedCitation(null);
   };
 
   return (
-    <div className="h-screen flex flex-col bg-white overflow-hidden">
+    <div className="flex flex-col bg-white overflow-hidden h-full">
       {/* Mobile Header with Tabs */}
       <div className="md:hidden flex-shrink-0 border-b border-gray-200">
         <div className="flex">
@@ -46,9 +62,13 @@ function ChatPageContent({ notebookId, bookId }: { notebookId: string; bookId: s
             onClick={() => setActiveTab('sources')}
             className={`flex-1 px-4 py-3 text-sm font-medium ${
               activeTab === 'sources'
-                ? 'text-blue-600 border-b-2 border-blue-600'
+                ? 'border-b-2'
                 : 'text-gray-600'
             }`}
+            style={activeTab === 'sources' ? {
+              color: 'var(--primary)',
+              borderBottomColor: 'var(--primary)'
+            } : undefined}
           >
             Nguồn
           </button>
@@ -56,9 +76,13 @@ function ChatPageContent({ notebookId, bookId }: { notebookId: string; bookId: s
             onClick={() => setActiveTab('chat')}
             className={`flex-1 px-4 py-3 text-sm font-medium ${
               activeTab === 'chat'
-                ? 'text-blue-600 border-b-2 border-blue-600'
+                ? 'border-b-2'
                 : 'text-gray-600'
             }`}
+            style={activeTab === 'chat' ? {
+              color: 'var(--primary)',
+              borderBottomColor: 'var(--primary)'
+            } : undefined}
           >
             Chat
           </button>
@@ -66,31 +90,34 @@ function ChatPageContent({ notebookId, bookId }: { notebookId: string; bookId: s
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex min-h-0">
         {/* Desktop: Side by side | Mobile: Tab-based */}
 
         {/* Sources Section */}
         <div className={`
           ${activeTab === 'sources' ? 'flex' : 'hidden'}
-          md:flex md:w-[30%] flex-shrink-0 overflow-hidden
-          w-full
+          md:flex md:w-[25%] flex-shrink-0
+          w-full h-full
         `}>
           <SourcesSection
             notebookId={notebookId}
             selectedCitation={selectedCitation}
             setSelectedCitation={setSelectedCitation}
             onCitationClose={handleCitationClose}
+            autoSelectFirst={!hasAutoSelected}
+            onAutoSelectComplete={() => setHasAutoSelected(true)}
           />
         </div>
 
         {/* Chat Section */}
         <div className={`
           ${activeTab === 'chat' ? 'flex' : 'hidden'}
-          md:flex md:w-[70%] flex-shrink-0 overflow-hidden
-          w-full
+          md:flex md:w-[75%] flex-shrink-0
+          w-full h-full
         `}>
           <ChatSection
             notebookId={notebookId}
+            bookId={bookId}
             onCitationClick={handleCitationClick}
           />
         </div>

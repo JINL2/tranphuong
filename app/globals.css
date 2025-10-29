@@ -1138,3 +1138,104 @@ button:focus-visible,
     max-width: 140px;
   }
 }
+
+/* Chat Layout - Messenger/Instagram DM Style */
+
+/* Main container for chat pages - fixed positioning below navigation */
+.chat-page-main {
+  /* Fixed positioning directly below navigation bar */
+  position: fixed;
+  top: 80px;        /* Start right below navigation (h-20 = 80px) */
+  left: 0;
+  right: 0;
+  bottom: 0;        /* Mobile: Full height (no footer) */
+
+  /* Prevent any scrolling on the main container */
+  overflow: hidden;
+
+  /* Width is full viewport (handled by left/right: 0) */
+  width: 100%;
+
+  /* Height auto-calculated by top + bottom positioning */
+  height: auto;
+
+  /* ✅ CRITICAL: Reset global main padding that creates white space */
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
+
+  /* Reset max-width from global main */
+  max-width: none !important;
+}
+
+/* Desktop (md and up): Reserve space for footer */
+@media (min-width: 768px) {
+  .chat-page-main {
+    bottom: 40px;   /* Desktop: Reserve space for footer (~40px height) */
+  }
+}
+
+/* Chat page content wrapper - fills the main container */
+.chat-page-content {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Legacy support - can be removed if not used elsewhere */
+.chat-grid-container {
+  display: grid;
+  grid-template-rows: 64px 1fr auto;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+}
+
+.chat-messages-scroll {
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* BookInfoHeader Scrollbar Styles - Cross-browser visible scrollbar */
+.book-summary-scroll {
+  max-height: 150px;
+  overflow-y: scroll; /* Force scrollbar visibility */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af #f3f4f6;
+  scrollbar-gutter: stable; /* Reserve space for scrollbar */
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+.book-summary-scroll::-webkit-scrollbar {
+  width: 8px;
+  -webkit-appearance: none; /* Override mobile defaults */
+}
+
+.book-summary-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.book-summary-scroll::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 4px;
+  min-height: 40px; /* Minimum thumb size for touch */
+}
+
+.book-summary-scroll::-webkit-scrollbar-thumb:active {
+  background: #6b7280;
+}
+
+/* Suggested Questions - Hide scrollbar for clean look */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

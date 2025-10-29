@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 import { supabaseAdmin } from '@/lib/supabase/server';
 import { convertRepliesToTributes } from '@/lib/utils/convertTribute';
 import TributeCard, { Tribute } from '@/components/tribute/TributeCard';
@@ -29,18 +30,18 @@ export default async function TributeListPage({ searchParams }: PageProps) {
         source: 'supabase' as const
       }));
     }
-  } catch (error) {
-    console.error('Failed to fetch tributes from Supabase:', error);
+  } catch {
+    // Silently handle error - page will show empty state
   }
 
-  // 4. Calculate pagination
+  // Calculate pagination
   const totalCount = allTributes.length;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedTributes = allTributes.slice(startIndex, endIndex);
 
-  // 5. Generate page numbers for pagination UI
+  // Generate page numbers for pagination UI
   const generatePageNumbers = () => {
     const pages = [];
     const maxVisible = 5; // Show 5 page numbers at a time
@@ -155,9 +156,7 @@ export default async function TributeListPage({ searchParams }: PageProps) {
             href="/#tuong-nho"
             className="text-sm text-gray-600 hover:text-gray-900 transition-colors inline-flex items-center gap-1"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="w-4 h-4" strokeWidth={2} />
             Quay về trang chủ
           </Link>
         </div>

@@ -48,16 +48,10 @@ const processMarkdownWithCitations = (
             {processInlineMarkdown(segment.text)}
             {segment.citation_id && onCitationClick && (() => {
               const citation = citations.find(c => c.citation_id === segment.citation_id);
-              console.log('Rendering citation button for user message:', {
-                segmentCitationId: segment.citation_id,
-                foundCitation: citation,
-                citationData: citation
-              });
               return citation ? (
                 <CitationButton
                   chunkIndex={citation.chunk_index || 0}
                   onClick={() => {
-                    console.log('Citation clicked:', citation);
                     onCitationClick(citation);
                   }}
                   excerpt={citation.excerpt}
@@ -75,25 +69,14 @@ const processMarkdownWithCitations = (
   
   segments.forEach((segment, segmentIndex) => {
     const citation = segment.citation_id ? citations.find(c => c.citation_id === segment.citation_id) : undefined;
-    
-    // Log citation info for debugging
-    if (segment.citation_id) {
-      console.log('Processing segment with citation_id:', {
-        segmentIndex,
-        citationId: segment.citation_id,
-        foundCitation: citation,
-        citationData: citation,
-        allCitations: citations
-      });
-    }
-    
+
     // Split segment text by double line breaks to handle multiple paragraphs within a segment
     const paragraphTexts = segment.text.split('\n\n').filter(text => text.trim());
-    
+
     paragraphTexts.forEach((paragraphText, paragraphIndex) => {
       // Process the paragraph text for markdown formatting
       const processedContent = processTextWithMarkdown(paragraphText.trim());
-      
+
       paragraphs.push(
         <p key={`${segmentIndex}-${paragraphIndex}`} className="mb-4 leading-relaxed">
           {processedContent}
@@ -102,12 +85,6 @@ const processMarkdownWithCitations = (
             <CitationButton
               chunkIndex={citation.chunk_index || 0}
               onClick={() => {
-                console.log('Citation button clicked:', {
-                  citation,
-                  chunk_lines_from: citation.chunk_lines_from,
-                  chunk_lines_to: citation.chunk_lines_to,
-                  source_id: citation.source_id
-                });
                 onCitationClick(citation);
               }}
               excerpt={citation.excerpt}

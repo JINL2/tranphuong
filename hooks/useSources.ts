@@ -13,8 +13,11 @@ export const useSources = (notebookId: string) => {
     queryKey: ['sources', notebookId],
     queryFn: async () => {
       if (!notebookId) return [];
-      
+
       console.log('Fetching sources for notebook:', notebookId);
+      console.log('Supabase client configured:', {
+        hasClient: !!supabase
+      });
 
       // Fetch all fields including content (InsightsLM approach)
       const { data, error } = await supabase
@@ -24,7 +27,22 @@ export const useSources = (notebookId: string) => {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching sources:', error);
+        console.error('❌ SUPABASE ERROR - Error fetching sources');
+        console.error('Error object:', error);
+        console.error('Error message:', error?.message || 'No message');
+        console.error('Error details:', error?.details || 'No details');
+        console.error('Error hint:', error?.hint || 'No hint');
+        console.error('Error code:', error?.code || 'No code');
+
+        // Log all error properties
+        console.error('Error properties:', {
+          message: error?.message,
+          details: error?.details,
+          hint: error?.hint,
+          code: error?.code,
+          keys: Object.keys(error || {})
+        });
+
         throw error;
       }
 

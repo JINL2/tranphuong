@@ -58,18 +58,15 @@ export default function TieuSuPage() {
                       />
                     </div>
                   </div>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-gray-700 leading-relaxed mb-4">
                     Sau khi nghỉ hưu, ông tiếp tục cống hiến cho giáo dục bằng việc sáng lập và trực tiếp làm Hiệu trưởng Trường Đại học Kinh doanh và Công nghệ Hà Nội – đại học tư thục phi lợi nhuận đầu tiên tại Việt Nam. Từ ngôi trường này, hàng vạn sinh viên đã được đào tạo, trở thành nguồn lao động chất lượng cao cho xã hội.
                   </p>
-                  <br />
                   <p className="text-gray-700 leading-relaxed">
                     Với hơn 40 năm giảng dạy và nhiều năm quản lý, ông để lại dấu ấn sâu đậm trong lòng học trò và giới học thuật. Những công trình của ông không chỉ có giá trị lý luận mà còn đậm tính nhân văn và thực tiễn. Suốt 99 năm cuộc đời, ông là biểu tượng của trí tuệ, đạo đức và tinh thần phụng sự Tổ quốc.
                   </p>
                 </div>
               </div>
             </section>
-
-            <div className="border-t border-gray-200"></div>
 
             {/* Life Journey - Hành Trình Cuộc Đời */}
             <section id="hanh-trinh-cuoc-doi">

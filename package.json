@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/check-env.js",
     "dev": "next dev",
+    "prebuild": "node scripts/check-env.js",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check-env": "node scripts/check-env.js",
+    "fix-env": "cp .env.example .env.local && node scripts/check-env.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.76.1",

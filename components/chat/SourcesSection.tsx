@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileText, CheckCircle, Loader2, XCircle, Upload } from 'lucide-react';
 import { useSources } from '@/hooks/useSources';
 import type { Source } from '@/types/chat/database';
@@ -22,13 +22,17 @@ interface SourcesSectionProps {
   selectedCitation?: Citation | null;
   onCitationClose?: () => void;
   setSelectedCitation?: (citation: Citation | null) => void;
+  autoSelectFirst?: boolean;
+  onAutoSelectComplete?: () => void;
 }
 
 const SourcesSection = ({
   notebookId,
   selectedCitation,
   onCitationClose,
-  setSelectedCitation
+  setSelectedCitation,
+  autoSelectFirst = false,
+  onAutoSelectComplete
 }: SourcesSectionProps) => {
   const { sources, isLoading } = useSources(notebookId);
   const [selectedSourceForViewing, setSelectedSourceForViewing] = useState<Source | null>(null);
@@ -63,18 +67,6 @@ const SourcesSection = ({
 
   // Get source content from memory (InsightsLM approach)
   const getSourceContent = (citation: Citation) => {
-    console.log('SourcesSection: getSourceContent DETAILED', {
-      citationSourceId: citation.source_id,
-      citationSourceIdType: typeof citation.source_id,
-      sourcesCount: sources?.length,
-      sourceIdsDetailed: sources?.map(s => ({
-        id: s.id,
-        idType: typeof s.id,
-        title: s.title,
-        matches: s.id === citation.source_id
-      })),
-      foundSource: sources?.find(s => s.id === citation.source_id)
-    });
     const source = sources?.find(s => s.id === citation.source_id);
     return source?.content || '';
   };
@@ -102,11 +94,6 @@ const SourcesSection = ({
   };
 
   const handleSourceClick = (source: Source) => {
-    console.log('SourcesSection: Source clicked from list', {
-      sourceId: source.id,
-      sourceTitle: source.title
-    });
-
     // Clear any existing citation state first
     if (setSelectedCitation) {
       setSelectedCitation(null);
@@ -117,12 +104,24 @@ const SourcesSection = ({
   };
 
   const handleBackToSources = () => {
-    console.log('SourcesSection: Back to sources clicked');
     setSelectedSourceForViewing(null);
     if (setSelectedCitation) {
       setSelectedCitation(null);
     }
   };
+
+  // Auto-select first source on initial load
+  useEffect(() => {
+    if (autoSelectFirst && !isLoading && sources && sources.length > 0 && !selectedSourceForViewing) {
+      // Auto-select the first source
+      handleSourceClick(sources[0]);
+
+      // Mark auto-selection as complete
+      if (onAutoSelectComplete) {
+        onAutoSelectComplete();
+      }
+    }
+  }, [autoSelectFirst, isLoading, sources, selectedSourceForViewing, onAutoSelectComplete]);
 
   return (
     <div className="w-full h-full bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden">
