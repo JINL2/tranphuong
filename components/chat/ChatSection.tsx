@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Send, Loader2, RefreshCw } from 'lucide-react';
-import { useNotebook } from '@/hooks/useNotebook';
 import { useSources } from '@/hooks/useSources';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { useAutoResizeTextarea } from '@/hooks/useAutoResizeTextarea';
@@ -16,6 +15,17 @@ interface ChatSectionProps {
   notebookId: string;
   bookId: string;
   onCitationClick?: (citation: Citation) => void;
+}
+
+// Book type based on books.json structure
+interface Book {
+  id: number;
+  title: string;
+  excerpt: string;
+  author: string;
+  year: number;
+  coverImage: string;
+  quote: string;
 }
 
 const ChatSection = ({ notebookId, bookId, onCitationClick }: ChatSectionProps) => {
@@ -36,7 +46,6 @@ const ChatSection = ({ notebookId, bookId, onCitationClick }: ChatSectionProps) 
     maxHeight: 200
   });
 
-  const { notebook } = useNotebook(notebookId);
   const { sources } = useSources(notebookId);
   const { messages, sendMessage, isSending, refetch, isLoading } = useChatMessages(sessionId, notebookId);
   
@@ -63,7 +72,7 @@ const ChatSection = ({ notebookId, bookId, onCitationClick }: ChatSectionProps) 
       try {
         const response = await fetch('/api/books');
         const books = await response.json();
-        const book = books.find((b: any) => b.id === parseInt(bookId));
+        const book = books.find((b: Book) => b.id === parseInt(bookId));
         if (book) {
           setBookTitle(book.title);
           setBookSummary(book.excerpt);
